@@ -1,0 +1,131 @@
+# Benchmark Dune — novela (Herbert, 1965) vs guiones de Dune: Part One (2021) y Part Two (2024).
+# ESTADO: verificado contra el corpus (rmb check-questions dune). Cada hecho se comprobó leyendo el
+# pasaje: p.ej. muerte de Kynes (P1, escena 113), Paul apuñala al Barón (P2, escena 133),
+# Alia no nacida (P2, escena 52), Chani se va sola al desierto (P2, escena 140),
+# Alia y el gom jabbar (libro III, cap. 10), "history will call us wives" (libro III, cap. 11).
+
+saga: dune
+verified: true
+questions:
+  # ---------------------------------------------------------------- factual_book
+  - id: dune_b01
+    category: factual_book
+    question: "In the Dune novel, whose writings are quoted in the epigraphs that open the chapters?"
+    question_es: "En la novela Dune, ¿de quién son los escritos citados en los epígrafes de los capítulos?"
+    answer: "Princess Irulan."
+    must: [["irulan"]]
+    evidence: [{medium: book, terms: ["by the princess irulan"]}]   # firma del epígrafe, no cualquier mención
+  - id: dune_b02
+    category: factual_book
+    question: "In the book, why does Dr. Yueh betray House Atreides?"
+    question_es: "En el libro, ¿por qué traiciona el Dr. Yueh a la Casa Atreides?"
+    answer: "The Harkonnens hold (and have tortured) his wife Wanna."
+    must: [["wanna", "wife"]]
+    evidence: [{medium: book, terms: ["wanna"]}]
+  - id: dune_b03
+    category: factual_book
+    question: "In the book, what is the name of the Fremen whom Paul kills in a ritual duel after joining Stilgar's troop?"
+    question_es: "En el libro, ¿cómo se llama el fremen al que Paul mata en un duelo ritual?"
+    answer: "Jamis."
+    must: [["jamis"]]
+    evidence: [{medium: book, terms: [["jamis fell like a limp rag"], ["paul killed jamis"], ["bested jamis"],
+                                      ["jamis", "kill"], ["jamis", "tahaddi"]]}]   # el duelo y sus consecuencias (Libro 2, caps. 11-12)
+  - id: dune_b04
+    category: factual_book
+    question: "In the book, who administers the gom jabbar test to Paul?"
+    question_es: "En el libro, ¿quién le aplica a Paul la prueba del gom jabbar?"
+    answer: "Reverend Mother Gaius Helen Mohiam."
+    must: [["mohiam", "reverend mother"]]
+    evidence: [{medium: book, terms: ["gom jabbar"]}]
+
+  # ---------------------------------------------------------------- factual_film
+  - id: dune_f01
+    category: factual_film
+    question: "In Dune: Part Two, in what kind of event does Feyd-Rautha fight Atreides prisoners?"
+    question_es: "En Dune: Parte Dos, ¿en qué tipo de evento pelea Feyd-Rautha contra prisioneros Atreides?"
+    answer: "A gladiatorial arena fight on Giedi Prime celebrating his birthday."
+    must: [["arena", "gladiator", "birthday"]]
+    evidence: [{medium: screenplay, work: dune_p2, terms: ["birthday"]}]
+  - id: dune_f02
+    category: factual_film
+    question: "In Dune: Part One, how does Dr. Liet Kynes die?"
+    question_es: "En Dune: Parte Uno, ¿cómo muere la Dra. Liet Kynes?"
+    answer: "Kynes summons a sandworm that devours her and the Sardaukar."
+    must: [["worm", "sandworm", "shai-hulud"]]
+    evidence: [{medium: screenplay, work: dune_p1, terms: [["kynes", "shai-hulud"], ["kynes", "worm", "sardaukar"]]}]   # escena 113 (2 fragmentos)
+
+  # ---------------------------------------------------------------- divergence
+  - id: dune_d01
+    category: divergence
+    question: "Who kills Baron Vladimir Harkonnen in the book, and who kills him in Dune: Part Two?"
+    question_es: "¿Quién mata al Barón Harkonnen en el libro y quién en Dune: Parte Dos?"
+    answer: "Book: Alia, with the gom jabbar. Film: Paul, with a knife."
+    must: [["alia"], ["paul"]]
+    evidence: [{medium: book, terms: ["alia", "gom jabbar", "baron"]}, {medium: screenplay, work: dune_p2, terms: ["baron", "stabs"]}]
+  - id: dune_d02
+    category: divergence
+    question: "Is Liet-Kynes a man or a woman in the book and in the film?"
+    question_es: "¿Liet-Kynes es hombre o mujer en el libro y en la película?"
+    answer: "Book: a man (Liet-Kynes, son of Pardot Kynes). Film: a woman (Dr. Liet Kynes)."
+    must: [["man", "male"], ["woman", "female"]]
+    evidence: [{medium: book, terms: ["kynes"]}, {medium: screenplay, work: dune_p1, terms: ["kynes"]}]
+  - id: dune_d03
+    category: divergence
+    question: "Has Alia been born by the time of the final battle in the book and in Dune: Part Two?"
+    question_es: "¿Ya nació Alia para la batalla final en el libro y en Dune: Parte Dos?"
+    answer: "Book: yes, she is a young child. Film: no, she is still unborn."
+    must: [["unborn", "not yet born", "not born", "in the womb", "fetus"], ["child", "born", "girl"]]
+    evidence: [{medium: book, terms: ["alia"]}, {medium: screenplay, work: dune_p2, terms: ["unborn"]}]
+  - id: dune_d04
+    category: divergence
+    question: "How does Chani react at the end when Paul announces he will marry Princess Irulan, in the book versus the film?"
+    question_es: "¿Cómo reacciona Chani cuando Paul anuncia que se casará con Irulan, en el libro frente a la película?"
+    answer: "Book: she accepts her role (Jessica consoles her: history will call them wives). Film: she refuses to bow and leaves alone."
+    must: [["leave", "leaves", "walks away", "rides", "departs"], ["accept", "wives", "concubine"]]
+    evidence: [{medium: book, terms: ["history will call us wives"]}, {medium: screenplay, work: dune_p2, terms: ["chani", "thumper"]}]
+  - id: dune_d05
+    category: divergence
+    question: "How much time passes during Paul's life among the Fremen in the book compared with the films?"
+    question_es: "¿Cuánto tiempo pasa Paul entre los fremen en el libro comparado con las películas?"
+    answer: "Book: years (Book Three opens 'in the third year of the Desert War'; Alia is born and is a small child). Films: a compressed timeline (Jessica is still pregnant at the end)."
+    must: [["third year", "two years", "2 years", "years"], ["shorter", "compressed", "months", "pregnant", "unborn"]]
+    evidence: [{medium: book, terms: ["third year of the desert war"]}, {medium: screenplay, work: dune_p2, terms: ["unborn"]}]
+
+  # ---------------------------------------------------------------- quantitative
+  - id: dune_q01
+    category: quantitative
+    question: "In the Dune: Part One screenplay, which character has the most lines of dialogue?"
+    question_es: "En el guion de Dune: Parte Uno, ¿qué personaje tiene más líneas?"
+    gold_fn: top_speaker
+    gold_args: {work: dune_p1}
+    evidence: []
+  - id: dune_q02
+    category: quantitative
+    question: "In the Dune: Part Two screenplay, which character has the most lines of dialogue?"
+    question_es: "En el guion de Dune: Parte Dos, ¿qué personaje tiene más líneas?"
+    gold_fn: top_speaker
+    gold_args: {work: dune_p2}
+    evidence: []
+
+  # ---------------------------------------------------------------- unanswerable
+  - id: dune_u01
+    category: unanswerable
+    question: "In Dune: Part Two, what does Count Hasimir Fenring tell Feyd-Rautha before the duel?"
+    question_es: "En Dune: Parte Dos, ¿qué le dice el Conde Fenring a Feyd-Rautha antes del duelo?"
+    answer: "False premise: Count Fenring does not appear in the films (only Lady Margot Fenring)."
+    expect: abstain
+    evidence: []
+  - id: dune_u02
+    category: unanswerable
+    question: "In the book, what does Chani say as she leaves Paul and rides off into the desert at the end?"
+    question_es: "En el libro, ¿qué dice Chani cuando deja a Paul y se va al desierto al final?"
+    answer: "False premise: in the book Chani does not leave Paul."
+    expect: abstain
+    evidence: []
+  - id: dune_u03
+    category: unanswerable
+    question: "In Dune: Part Two, how does the toddler Alia kill the Baron?"
+    question_es: "En Dune: Parte Dos, ¿cómo mata la niña Alia al Barón?"
+    answer: "False premise: in the film Alia is unborn; Paul kills the Baron."
+    expect: abstain
+    evidence: []

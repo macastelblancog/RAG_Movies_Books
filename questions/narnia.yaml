@@ -1,0 +1,123 @@
+# Benchmark Narnia — ómnibus de los 7 libros (C.S. Lewis) vs guion de
+# The Lion, the Witch and the Wardrobe (Markus & McFeely, rev. 12-10-03; escaneado → OCR).
+# Verificado contra el corpus (rmb check-questions narnia). Solo LWW tiene guion: los demás libros
+# entran como lado libro (factual_book / premisa falsa). Prince Caspian (2008) no incluido: el PDF
+# disponible era otra copia del guion de LWW.
+
+saga: narnia
+verified: true
+questions:
+  # ---------------------------------------------------------------- factual_book
+  - id: narnia_b01
+    category: factual_book
+    question: "In The Lion, the Witch and the Wardrobe book, what gifts does Father Christmas give Lucy?"
+    question_es: "En el libro, ¿qué regalos le da Papá Noel a Lucy?"
+    answer: "A bottle of healing cordial (made from the juice of a fire-flower) and a small dagger."
+    must: [["cordial"], ["dagger"]]
+    evidence: [{medium: book, work: lww, terms: ["cordial", "dagger"]}]
+  - id: narnia_b02
+    category: factual_book
+    question: "In The Lion, the Witch and the Wardrobe book, what sweet does Edmund ask the White Witch for?"
+    question_es: "En el libro, ¿qué dulce le pide Edmund a la Bruja Blanca?"
+    answer: "Turkish Delight."
+    must: [["turkish delight"]]
+    evidence: [{medium: book, work: lww, terms: ["turkish delight"]}]
+  - id: narnia_b03
+    category: factual_book
+    question: "In The Lion, the Witch and the Wardrobe book, who signs the notice found at Mr Tumnus's house, and what is his title?"
+    question_es: "En el libro, ¿quién firma el aviso encontrado en la casa del señor Tumnus y cuál es su cargo?"
+    answer: "Maugrim, Captain of the Secret Police."
+    must: [["maugrim"], ["secret police"]]
+    evidence: [{medium: book, work: lww, terms: ["maugrim", "secret police"]}]
+  - id: narnia_b04
+    category: factual_book
+    question: "In The Voyage of the Dawn Treader book, what is the full name of the boy who 'almost deserved' his name?"
+    question_es: "En La travesía del Viajero del Alba, ¿cuál es el nombre completo del niño que 'casi merecía' su nombre?"
+    answer: "Eustace Clarence Scrubb."
+    must: [["eustace"], ["scrubb"]]
+    evidence: [{medium: book, work: dawn_treader, terms: ["eustace clarence scrubb"]}]
+
+  # ---------------------------------------------------------------- factual_film (guion LWW)
+  - id: narnia_f01
+    category: factual_film
+    question: "In The Lion, the Witch and the Wardrobe film, what is the name of the White Witch's dwarf servant?"
+    question_es: "En la película El león, la bruja y el ropero, ¿cómo se llama el enano sirviente de la Bruja Blanca?"
+    answer: "Ginarrbrik."
+    must: [["ginarrbrik"]]
+    evidence: [{medium: screenplay, work: lww, terms: ["ginarrbrik"]}]
+  - id: narnia_f02
+    category: factual_film
+    question: "In The Lion, the Witch and the Wardrobe film, what event opens the story in London?"
+    question_es: "En la película, ¿qué evento abre la historia en Londres?"
+    answer: "A German bombing raid (the Blitz): air-raid sirens, bombers, and the family running to the shelter."
+    must: [["bomb", "air raid", "air-raid", "blitz"]]
+    evidence: [{medium: screenplay, work: lww, terms: ["air raid", "bombers"]}]
+  - id: narnia_f03
+    category: factual_film
+    question: "In The Lion, the Witch and the Wardrobe film, which animal guides the Pevensies and the Beavers to safety after the wolves attack?"
+    question_es: "En la película, ¿qué animal guía a los Pevensie y a los castores tras el ataque de los lobos?"
+    answer: "A talking Fox."
+    must: [["fox"]]
+    evidence: [{medium: screenplay, work: lww, terms: ["fox", "beaver"]}]
+
+  # ---------------------------------------------------------------- divergence
+  - id: narnia_d01
+    category: divergence
+    question: "What does Father Christmas tell Lucy about battles in the book, and how is the line changed in the film?"
+    question_es: "¿Qué le dice Papá Noel a Lucy sobre las batallas en el libro y cómo cambia la frase en la película?"
+    answer: "Book: 'battles are ugly when women fight'. Film: softened to 'battles are ugly affairs'."
+    must: [["when women fight"], ["affairs"]]
+    evidence: [{medium: book, work: lww, terms: ["battles are ugly when women fight"]}, {medium: screenplay, work: lww, terms: ["battles are ugly affairs"]}]
+  - id: narnia_d02
+    category: divergence
+    question: "Is the White Witch's dwarf given a name in the book, as he is in the film?"
+    question_es: "¿El enano de la Bruja Blanca tiene nombre en el libro, como en la película?"
+    answer: "No. In the book he is just 'the dwarf'; the film names him Ginarrbrik."
+    must: [["no", "not", "unnamed", "never", "only in the film"], ["ginarrbrik"]]
+    evidence: [{medium: book, work: lww, terms: ["dwarf"]}, {medium: screenplay, work: lww, terms: ["ginarrbrik"]}]
+  - id: narnia_d03
+    category: divergence
+    question: "How does The Lion, the Witch and the Wardrobe book open compared with the film's opening in London?"
+    question_es: "¿Cómo empieza el libro El león, la bruja y el ropero comparado con la apertura de la película en Londres?"
+    answer: "Book: the children have simply been sent away from London 'because of the air-raids' (no bombing scene). Film: opens with a bombing raid on London."
+    must: [["sent away", "air-raids", "professor", "country"], ["bomb", "raid", "blitz"]]
+    evidence: [{medium: book, work: lww, terms: ["because of the air-raids"]}, {medium: screenplay, work: lww, terms: ["bombers"]}]
+  - id: narnia_d04
+    category: divergence
+    question: "Is there a talking Fox who helps the children in the book, as in the film?"
+    question_es: "¿Hay un zorro que habla y ayuda a los niños en el libro, como en la película?"
+    answer: "No. The helpful Fox is a film addition; in the book foxes only appear as stone statues in the Witch's courtyard."
+    must: [["no", "not", "never", "only in the film", "addition"]]
+    evidence: [{medium: screenplay, work: lww, terms: ["fox"]}, {medium: book, work: lww, terms: ["foxes"]}]
+
+  # ---------------------------------------------------------------- quantitative
+  - id: narnia_q01
+    category: quantitative
+    question: "In The Lion, the Witch and the Wardrobe screenplay, which character has the most lines of dialogue?"
+    question_es: "En el guion de El león, la bruja y el ropero, ¿qué personaje tiene más líneas?"
+    gold_fn: top_speaker
+    gold_args: {work: lww}
+    evidence: []
+  - id: narnia_q02
+    category: quantitative
+    question: "How many chapters does The Lion, the Witch and the Wardrobe book have?"
+    question_es: "¿Cuántos capítulos tiene el libro El león, la bruja y el ropero?"
+    gold_fn: n_chapters
+    gold_args: {work: lww}
+    evidence: []
+
+  # ---------------------------------------------------------------- unanswerable
+  - id: narnia_u01
+    category: unanswerable
+    question: "In the Prince Caspian book, how does Edmund defeat the Lady of the Green Kirtle?"
+    question_es: "En el libro Príncipe Caspian, ¿cómo derrota Edmund a la Dama de la Saya Verde?"
+    answer: "False premise: the Lady of the Green Kirtle belongs to The Silver Chair, and Edmund is not involved."
+    expect: abstain
+    evidence: []
+  - id: narnia_u02
+    category: unanswerable
+    question: "In The Lion, the Witch and the Wardrobe film, how does Eustace turn into a dragon?"
+    question_es: "En la película El león, la bruja y el ropero, ¿cómo se convierte Eustace en dragón?"
+    answer: "False premise: Eustace does not appear in that story; his transformation happens in The Voyage of the Dawn Treader."
+    expect: abstain
+    evidence: []

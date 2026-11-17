@@ -1,0 +1,38 @@
+# Entornos
+.venv/
+venv/
+*.egg-info/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Datos: los libros y guiones tienen derechos de autor -> nunca al repo.
+# Solo se versionan los README de procedencia.
+data/raw/**
+!data/raw/README.md
+data/processed/**
+!data/processed/.gitkeep
+
+# Salidas pesadas / con texto del corpus
+reports/
+reports/runs/
+reports/indexes/
+reports/prompts/
+README_files
+
+# Secretos
+.env
+_to_delete/
+
+# Muestras de auditoría: contienen citas textuales de los libros
+reports/ml/*/book_quotes_audit_sample.csv
+reports/cache/
+
+
+# diagnóstico local de recuperación (no versionado)
+scripts/diagnose_retrieval.py
+reports/diag_*.txt
+
+# Documentos (informe y presentaciones): locales
+docs/

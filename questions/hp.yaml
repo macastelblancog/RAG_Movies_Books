@@ -1,0 +1,164 @@
+# Benchmark Harry Potter — libros 2–7 (Pottermore 2015) vs diálogo de las 8 películas (Maven Analytics).
+# El lado película es SOLO DIÁLOGO (sin acotaciones): las preguntas de película se basan en lo que
+# los personajes DICEN, y las divergencias verificables son principalmente AUSENCIAS (0 menciones en
+# el diálogo de las películas frente a varias en los libros), comprobadas con `rmb check-questions hp`.
+# Libro 1 no está en el corpus: Philosopher's Stone solo tiene lado película.
+
+saga: hp
+questions:
+  # ---------------------------------------------------------------- factual_book
+  - id: hp_b01
+    category: factual_book
+    question: "In the Chamber of Secrets book, whose deathday party do Harry, Ron and Hermione attend, and which deathday is it?"
+    question_es: "En el libro La Cámara Secreta, ¿a la fiesta de cumpleaños de muerte de quién asisten y cuál es?"
+    answer: "Nearly Headless Nick's five hundredth deathday."
+    must: [["nick"], ["500", "five hundredth", "five-hundredth"]]
+    evidence: [{medium: book, work: hp2, terms: ["five hundredth deathday"]}]
+  - id: hp_b02
+    category: factual_book
+    question: "In the Goblet of Fire book, what does Hermione's S.P.E.W. stand for?"
+    question_es: "En el libro El Cáliz de Fuego, ¿qué significa la P.E.D.D.O. (S.P.E.W.) de Hermione?"
+    answer: "Society for the Promotion of Elfish Welfare."
+    must: [["promotion"], ["elfish welfare"]]
+    evidence: [{medium: book, work: hp4, terms: ["elfish welfare"]}]
+  - id: hp_b03
+    category: factual_book
+    question: "In the Goblet of Fire book, what is the name of Barty Crouch's house-elf?"
+    question_es: "En el libro El Cáliz de Fuego, ¿cómo se llama la elfina doméstica de Barty Crouch?"
+    answer: "Winky."
+    must: [["winky"]]
+    evidence: [{medium: book, work: hp4, terms: ["winky"]}]
+  - id: hp_b04
+    category: factual_book
+    question: "In the Prisoner of Azkaban book, who sent Harry the Firebolt?"
+    question_es: "En el libro El Prisionero de Azkaban, ¿quién le envió a Harry la Saeta de Fuego?"
+    answer: "Sirius Black."
+    must: [["sirius"]]
+    evidence: [{medium: book, work: hp3, terms: ["firebolt", "sirius"]}]
+  - id: hp_b05
+    category: factual_book
+    question: "In the Half-Blood Prince book, who replaces Cornelius Fudge as Minister for Magic?"
+    question_es: "En el libro El Misterio del Príncipe, ¿quién reemplaza a Fudge como Ministro de Magia?"
+    answer: "Rufus Scrimgeour."
+    must: [["scrimgeour"]]
+    evidence: [{medium: book, work: hp6, terms: ["scrimgeour"]}]
+  - id: hp_b06
+    category: factual_book
+    question: "In the Half-Blood Prince book, what is the name of Merope Gaunt's father?"
+    question_es: "En el libro El Misterio del Príncipe, ¿cómo se llama el padre de Merope Gaunt?"
+    answer: "Marvolo Gaunt."
+    must: [["marvolo"]]
+    evidence: [{medium: book, work: hp6, terms: ["marvolo"]}]
+  - id: hp_b07
+    category: factual_book
+    question: "In the Order of the Phoenix book, who does Dumbledore appoint to teach Divination after Umbridge sacks Trelawney?"
+    question_es: "En el libro La Orden del Fénix, ¿a quién nombra Dumbledore para enseñar Adivinación tras el despido de Trelawney?"
+    answer: "Firenze, the centaur."
+    must: [["firenze"]]
+    evidence: [{medium: book, work: hp5, terms: ["firenze"]}]
+
+  # ---------------------------------------------------------------- factual_film (diálogo)
+  - id: hp_f01
+    category: factual_film
+    question: "In the Philosopher's Stone film, who tells Harry 'You're a wizard, Harry'?"
+    question_es: "En la película La Piedra Filosofal, ¿quién le dice a Harry 'Eres un mago, Harry'?"
+    answer: "Rubeus Hagrid."
+    must: [["hagrid"]]
+    evidence: [{medium: dialogue, work: hp1, terms: ["you're a wizard"]}]
+  - id: hp_f02
+    category: factual_film
+    question: "In the Philosopher's Stone film, which professor teaches the class the Wingardium Leviosa charm?"
+    question_es: "En la película La Piedra Filosofal, ¿qué profesor enseña el hechizo Wingardium Leviosa?"
+    answer: "Professor Filius Flitwick."
+    must: [["flitwick"]]
+    evidence: [{medium: dialogue, work: hp1, terms: ["leviosa", "flitwick"]}]
+  - id: hp_f03
+    category: factual_film
+    question: "In the Goblet of Fire film, who orders 'Kill the spare' in the graveyard?"
+    question_es: "En la película El Cáliz de Fuego, ¿quién ordena 'Mata al otro' en el cementerio?"
+    answer: "Voldemort (Wormtail kills Cedric)."
+    must: [["voldemort"]]
+    evidence: [{medium: dialogue, work: hp4, terms: ["kill the spare"]}]
+  - id: hp_f04
+    category: factual_film
+    question: "In the Prisoner of Azkaban film, which names appear on the Marauder's Map as its makers?"
+    question_es: "En la película El Prisionero de Azkaban, ¿qué nombres aparecen en el Mapa del Merodeador como sus creadores?"
+    answer: "Moony, Wormtail, Padfoot and Prongs."
+    must: [["moony"], ["wormtail"], ["padfoot"], ["prongs"]]
+    evidence: [{medium: dialogue, work: hp3, terms: ["moony", "prongs"]}]
+  - id: hp_f05
+    category: factual_film
+    question: "In the Half-Blood Prince film, who reveals 'I'm the Half-Blood Prince' to Harry?"
+    question_es: "En la película El Misterio del Príncipe, ¿quién le revela a Harry 'Yo soy el Príncipe Mestizo'?"
+    answer: "Severus Snape."
+    must: [["snape"]]
+    evidence: [{medium: dialogue, work: hp6, terms: ["i'm the half-blood prince"]}]
+
+  # ---------------------------------------------------------------- divergence (ausencias verificadas)
+  - id: hp_d01
+    category: divergence
+    question: "Does Peeves the poltergeist appear in the Harry Potter films as he does in the books?"
+    question_es: "¿Aparece Peeves el poltergeist en las películas como en los libros?"
+    answer: "No. Peeves is a recurring character in the books but was cut from the films."
+    must: [["no", "not", "never", "cut", "absent", "omitted"]]
+    evidence: [{medium: book, terms: ["peeves"]}]
+  - id: hp_d02
+    category: divergence
+    question: "Is Hermione's S.P.E.W. campaign for house-elf rights part of the Goblet of Fire film?"
+    question_es: "¿La campaña P.E.D.D.O. de Hermione forma parte de la película El Cáliz de Fuego?"
+    answer: "No. It is a book-only subplot."
+    must: [["no", "not", "never", "cut", "absent", "omitted", "only in the book"]]
+    evidence: [{medium: book, work: hp4, terms: ["elfish welfare"]}]
+  - id: hp_d03
+    category: divergence
+    question: "Does Nearly Headless Nick's deathday party appear in the Chamber of Secrets film?"
+    question_es: "¿Aparece la fiesta de cumpleaños de muerte de Nick Casi Decapitado en la película La Cámara Secreta?"
+    answer: "No. The Deathday Party chapter was cut from the film."
+    must: [["no", "not", "never", "cut", "absent", "omitted"]]
+    evidence: [{medium: book, work: hp2, terms: ["deathday party"]}]
+  - id: hp_d04
+    category: divergence
+    question: "Does Winky the house-elf appear in the Goblet of Fire film as in the book?"
+    question_es: "¿Aparece Winky la elfina en la película El Cáliz de Fuego como en el libro?"
+    answer: "No. Winky (and the house-elf subplot) is absent from the film."
+    must: [["no", "not", "never", "cut", "absent", "omitted"]]
+    evidence: [{medium: book, work: hp4, terms: ["winky"]}]
+
+  # ---------------------------------------------------------------- quantitative
+  - id: hp_q01
+    category: quantitative
+    question: "In the Prisoner of Azkaban film dialogue, which character has the most lines?"
+    question_es: "En el diálogo de la película El Prisionero de Azkaban, ¿qué personaje tiene más líneas?"
+    gold_fn: top_speaker
+    gold_args: {work: hp3}
+    evidence: []
+  - id: hp_q02
+    category: quantitative
+    question: "How many chapters does the Order of the Phoenix book have?"
+    question_es: "¿Cuántos capítulos tiene el libro La Orden del Fénix?"
+    gold_fn: n_chapters
+    gold_args: {work: hp5}
+    evidence: []
+
+  # ---------------------------------------------------------------- unanswerable / premisa falsa
+  - id: hp_u01
+    category: unanswerable
+    question: "In the Chamber of Secrets book, what song does Nearly Headless Nick sing at the Yule Ball?"
+    question_es: "En el libro La Cámara Secreta, ¿qué canción canta Nick Casi Decapitado en el Baile de Navidad?"
+    answer: "False premise: the Yule Ball happens in Goblet of Fire, not Chamber of Secrets."
+    expect: abstain
+    evidence: []
+  - id: hp_u02
+    category: unanswerable
+    question: "In the Half-Blood Prince book, how do Bellatrix and Greyback burn down the Burrow at Christmas?"
+    question_es: "En el libro El Misterio del Príncipe, ¿cómo queman Bellatrix y Greyback La Madriguera en Navidad?"
+    answer: "False premise: the attack on the Burrow is an invention of the film; it does not happen in the book."
+    expect: abstain
+    evidence: []
+  - id: hp_u03
+    category: unanswerable
+    question: "In the films, what does Peeves shout at Filch during the Triwizard Tournament?"
+    question_es: "En las películas, ¿qué le grita Peeves a Filch durante el Torneo de los Tres Magos?"
+    answer: "False premise: Peeves does not appear in the films."
+    expect: abstain
+    evidence: []

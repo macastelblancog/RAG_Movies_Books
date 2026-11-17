@@ -1,0 +1,242 @@
+# Fuente única de verdad sobre los corpus.
+# Rutas relativas a data/raw/. Si un archivo no existe, la ingesta lo omite con un aviso.
+#
+# medium:  book | screenplay | dialogue_csv
+# work:    identificador corto de la obra (película o volumen) para citas y alineación
+# order:   orden narrativo dentro de la saga (para DTW / alineación libro→película)
+
+sagas:
+  lotr:
+    title: "The Lord of the Rings"
+    work_titles: {fotr: "The Fellowship of the Ring", ttt: "The Two Towers", rotk: "The Return of the King"}
+    sources:
+      - id: lotr_book
+        medium: book
+        path: lotr/book/LOTR - ALL.pdf
+        parser: book_pdf
+        # El PDF es la trilogía completa; se parte por "BOOK ONE..SIX"
+        parts:
+          fotr: [1, 2]
+          ttt: [3, 4]
+          rotk: [5, 6]
+        chapter_regex: '^\s*Chapter\s+(\d+)\s*$'
+        part_regex: '^\s*BOOK\s+(ONE|TWO|THREE|FOUR|FIVE|SIX)\s*$'
+        stop_regex: '^\s*APPENDIX\s+A\s*$'
+      - id: lotr_fotr_screenplay
+        medium: screenplay
+        work: fotr
+        order: 1
+        path: lotr/screenplay/LordoftheRings1-FOTR.pdf
+        parser: screenplay_pdf
+      - id: lotr_ttt_screenplay
+        medium: screenplay
+        work: ttt
+        order: 2
+        path: lotr/screenplay/LordoftheRings2-TTT.pdf
+        parser: screenplay_pdf
+      - id: lotr_rotk_screenplay
+        medium: screenplay
+        work: rotk
+        order: 3
+        path: lotr/screenplay/LordoftheRings3-ROTK.pdf
+        parser: screenplay_pdf
+      - id: lotr_dialogue_kaggle
+        medium: dialogue_csv
+        path: lotr/kaggle/lotr_scripts.csv
+        parser: dialogue_csv
+        columns: {speaker: char, text: dialog, work: movie}
+        work_map:
+          "The Fellowship of the Ring": fotr
+          "The Two Towers": ttt
+          "The Return of the King": rotk
+
+  hp:
+    title: "Harry Potter"
+    work_titles: {hp1: "Philosopher's Stone", hp2: "Chamber of Secrets", hp3: "Prisoner of Azkaban", hp4: "Goblet of Fire", hp5: "Order of the Phoenix", hp6: "Half-Blood Prince", hp7: "Deathly Hallows", hp7a: "Deathly Hallows Part 1", hp7b: "Deathly Hallows Part 2"}
+    # Película → libro con el que se compara (sin entrada = mismo id). PS (hp1) no tiene libro en el corpus.
+    book_for_film: {hp7a: hp7, hp7b: hp7}
+    sources:
+      - id: hp2_book
+        medium: book
+        work: hp2
+        path: hp/book/hp2_chamber_of_secrets.pdf
+        parser: book_pdf
+        # Pottermore 2015: "CHAPTER 1" / "C H A P T E R 1O w l P o s t" (título pegado, letras espaciadas)
+        chapter_regex: '^\s*C\s?H\s?A\s?P\s?T\s?E\s?R\s*((?:\d\s?)*\d)\s*([A-Z].*)?$'
+        stop_on_restart: true      # índice al inicio y adelanto del siguiente libro al final
+      - id: hp3_book
+        medium: book
+        work: hp3
+        path: hp/book/hp3_prisoner_of_azkaban.pdf
+        parser: book_pdf
+        # Pottermore 2015: "CHAPTER 1" / "C H A P T E R 1O w l P o s t" (título pegado, letras espaciadas)
+        chapter_regex: '^\s*C\s?H\s?A\s?P\s?T\s?E\s?R\s*((?:\d\s?)*\d)\s*([A-Z].*)?$'
+        stop_on_restart: true      # índice al inicio y adelanto del siguiente libro al final
+      - id: hp4_book
+        medium: book
+        work: hp4
+        path: hp/book/hp4_goblet_of_fire.pdf
+        parser: book_pdf
+        # Pottermore 2015: "CHAPTER 1" / "C H A P T E R 1O w l P o s t" (título pegado, letras espaciadas)
+        chapter_regex: '^\s*C\s?H\s?A\s?P\s?T\s?E\s?R\s*((?:\d\s?)*\d)\s*([A-Z].*)?$'
+        stop_on_restart: true      # índice al inicio y adelanto del siguiente libro al final
+      - id: hp5_book
+        medium: book
+        work: hp5
+        path: hp/book/hp5_order_of_the_phoenix.pdf
+        parser: book_pdf
+        # Pottermore 2015: "CHAPTER 1" / "C H A P T E R 1O w l P o s t" (título pegado, letras espaciadas)
+        chapter_regex: '^\s*C\s?H\s?A\s?P\s?T\s?E\s?R\s*((?:\d\s?)*\d)\s*([A-Z].*)?$'
+        stop_on_restart: true      # índice al inicio y adelanto del siguiente libro al final
+      - id: hp6_book
+        medium: book
+        work: hp6
+        path: hp/book/hp6_half_blood_prince.pdf
+        parser: book_pdf
+        # Pottermore 2015: "CHAPTER 1" / "C H A P T E R 1O w l P o s t" (título pegado, letras espaciadas)
+        chapter_regex: '^\s*C\s?H\s?A\s?P\s?T\s?E\s?R\s*((?:\d\s?)*\d)\s*([A-Z].*)?$'
+        stop_on_restart: true      # índice al inicio y adelanto del siguiente libro al final
+      - id: hp7_book
+        medium: book
+        work: hp7
+        path: hp/book/hp7_deathly_hallows.pdf
+        parser: book_pdf
+        # Pottermore 2015: "CHAPTER 1" / "C H A P T E R 1O w l P o s t" (título pegado, letras espaciadas)
+        chapter_regex: '^\s*C\s?H\s?A\s?P\s?T\s?E\s?R\s*((?:\d\s?)*\d)\s*([A-Z].*)?$'
+        stop_on_restart: true      # índice al inicio y adelanto del siguiente libro al final
+        extra_heading_regex: '^\s*N\s?i\s?n\s?e\s?t\s?e\s?e\s?n\s?Y'   # epílogo "Nineteen Years Later"
+      - id: hp_dialogue_maven
+        medium: dialogue
+        path: hp/maven/Dialogue.csv
+        parser: relational_dialogue
+        tables: {characters: Characters.csv, chapters: Chapters.csv, places: Places.csv}
+        work_map: {1: hp1, 2: hp2, 3: hp3, 4: hp4, 5: hp5, 6: hp6, 7: hp7a, 8: hp7b}
+      - id: hp1_dialogue_kaggle
+        medium: dialogue_csv        # control (no se indexa en el RAG): Character;Sentence
+        work: hp1
+        path: hp/kaggle/Harry Potter 1.csv
+        parser: dialogue_csv
+        sep: ";"
+        columns: {speaker: Character, text: Sentence}
+      - id: hp2_dialogue_kaggle
+        medium: dialogue_csv        # control (no se indexa en el RAG): Character;Sentence
+        work: hp2
+        path: hp/kaggle/Harry Potter 2.csv
+        parser: dialogue_csv
+        sep: ";"
+        columns: {speaker: Character, text: Sentence}
+      - id: hp3_dialogue_kaggle
+        medium: dialogue_csv        # control (no se indexa en el RAG): Character;Sentence
+        work: hp3
+        path: hp/kaggle/Harry Potter 3.csv
+        parser: dialogue_csv
+        sep: ";"
+        columns: {speaker: Character, text: Sentence}
+
+  dune:
+    title: "Dune"
+    work_titles: {dune: "Dune", dune_p1: "Dune: Part One", dune_p2: "Dune: Part Two"}
+    book_for_film: {dune_p1: dune, dune_p2: dune}   # una novela → dos películas
+    sources:
+      - id: dune_book
+        medium: book
+        work: dune
+        path: dune/book/dune.pdf
+        parser: book_pdf
+        # Edición con capítulos separados por "= = = = = =" y abiertos por un epígrafe de Irulan.
+        # Partes: "Book 1 / DUNE", "Book Two / MUAD'DIB", "Book Three / THE PROPHET".
+        chapter_regex: '^\s*=(?:\s*=){3,}\s*$'
+        epigraph_regex: '^\s*[-—–]+\s*from\s+'   # → título del capítulo
+        part_regex: '(?i)^\s*book\s+(1|one|two|three)\s*$'
+        stop_regex: '^\s*Appendix\s+I\b'
+      - id: dune_p1_screenplay
+        medium: screenplay
+        work: dune_p1
+        order: 1
+        path: dune/screenplay/dune_part_one.pdf
+        parser: screenplay_pdf
+      - id: dune_p2_screenplay
+        medium: screenplay
+        work: dune_p2
+        order: 2
+        path: dune/screenplay/dune_part_two.pdf
+        parser: screenplay_pdf
+
+  narnia:
+    title: "The Chronicles of Narnia"
+    work_titles: {lww: "The Lion, the Witch and the Wardrobe", caspian: "Prince Caspian", dawn_treader: "The Voyage of the Dawn Treader", silver_chair: "The Silver Chair", horse_and_his_boy: "The Horse and His Boy", magicians_nephew: "The Magician's Nephew", last_battle: "The Last Battle"}
+    sources:
+      # Ómnibus con los 7 libros en orden de publicación; cada libro reinicia en "CHAPTER ONE".
+      - id: narnia_books
+        medium: book
+        path: narnia/book/narnia_7_books.pdf
+        parser: book_pdf
+        chapter_regex: '^\s*CHAPTER\s+([A-Z][A-Z\- ]*?|\d+)\s*$'
+        part_on_restart: true
+        parts: {lww: [1], caspian: [2], dawn_treader: [3], silver_chair: [4],
+                horse_and_his_boy: [5], magicians_nephew: [6], last_battle: [7]}
+      # Guion escaneado (sin capa de texto): se usa la caché OCR lww_2005.pdf.layout.json
+      - id: narnia_lww_screenplay
+        medium: screenplay
+        work: lww
+        order: 1
+        path: narnia/screenplay/lww_2005.pdf
+        parser: screenplay_pdf
+      - id: narnia_caspian_screenplay
+        medium: screenplay
+        work: caspian
+        order: 2
+        path: narnia/screenplay/prince_caspian_2008.pdf     # no incluido: el PDF disponible era un duplicado del de LWW
+        parser: screenplay_pdf
+
+# RAG global: UN índice con todas las sagas (la saga es un metadato filtrable, no un índice aparte).
+#   rmb index        → construye reports/indexes/all_<dense>.pkl
+#   rmb ask "..."    → enruta saga/medio/obra desde la pregunta, recupera, reordena y (opcional) responde
+rag:
+  dense: neural                      # neural (embeddings) | lsa (sin descargas, más débil)
+  embedding_model: intfloat/multilingual-e5-base   # multilingüe: pregunta en español ↔ texto en inglés
+  query_prefix: "query: "            # convención de la familia E5
+  passage_prefix: "passage: "
+  max_seq_length: 512                # los chunks son de ~220 palabras: no truncar a 128 tokens
+  reranker_model: cross-encoder/mmarco-mMiniLMv2-L12-H384-v1   # cross-encoder multilingüe
+  rerank_pool: 30                    # candidatos que lee el reranker
+  rerank_fusion: replace             # replace: el reranker ordena | rrf: fusiona con el orden híbrido
+                                     # replace obtuvo mejor MRR que rrf; rrf queda como ablación
+  contextual_headers: false           # indexar cada fragmento con "saga · medio · obra · capítulo/escena" delante
+                                     # (solo para buscar; el LLM ve el texto original con su cita)
+  k_balanced: 10                     # pasajes en preguntas libro+película (5 + 5) para el LLM
+  hyde: false                        # HyDE: el LLM local escribe un pasaje hipotético y se busca también con él
+                                     # (requiere llama-server; activar con --hyde o aquí tras medirlo)
+  k: 6                               # pasajes que recibe el LLM
+  llm_passages: 4                    # pasajes (ya con su ventana de contexto) que lee el LLM
+  context_words: 1200                # tope de palabras del contexto: menos ruido para un modelo pequeño
+  graph:                             # orquestación con LangGraph (condición `rag_graph` del benchmark)
+    split_divergence: true           # true: libro y película se responden por separado y se unen
+    orchestrate: true                # `rmb ask` usa el grafo (si langgraph está instalado)
+  llm:                               # servidores locales compatibles con OpenAI (llama.cpp: llama-server)
+    default: phi4mini                # `--client local` usa este; `--client local:<nombre>` elige otro
+    max_tokens: 500
+    temperature: 0.0                 # determinista: respuestas reproducibles en el benchmark
+    server: ../AGENTIC_LLM/llama.cpp/llama-server.exe   # para `rmb serve <nombre>` (ruta relativa a la raíz)
+    models:                          # uno por modelo, cada uno en su puerto
+      phi4mini:
+        url: http://127.0.0.1:8080/v1
+        model: phi-4-mini
+        gguf: ../AGENTIC_LLM/models/Phi-4-mini-instruct-Q4_K_M.gguf
+      gemma3_4b:
+        url: http://127.0.0.1:8081/v1
+        model: gemma-3-4b-it
+        gguf: ../AGENTIC_LLM/models/gemma-3-4b-it-Q4_K_M.gguf
+
+# Parámetros de chunking para RAG (unidad citable = capítulo / escena; el chunk hereda la cita)
+chunking:
+  max_words: 220
+  overlap_words: 40
+
+# Parámetros del parser de guiones (en puntos PDF; 72 pt = 1 pulgada).
+# Formato estándar: acción ~1.5", diálogo ~2.5", acotación ~3.1", personaje ~3.7", transición ~6.5"
+screenplay_layout:
+  action_max_x: 140
+  dialogue_max_x: 205
+  parenthetical_max_x: 240
+  character_max_x: 400

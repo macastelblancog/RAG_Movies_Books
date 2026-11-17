@@ -1,0 +1,115 @@
+# Personajes por saga — FUENTE ÚNICA para alias de hablante, conteo de menciones, grafos,
+# atribución de citas del libro (intervenciones) y la comparación de personajes libro vs película.
+#
+#   CLAVE CANÓNICA:            nombre del personaje tal como queda como hablante en la película
+#     names:   [...]           formas en que el TEXTO lo nombra (libro, acotaciones, diálogo).
+#                              Se buscan con límite de palabra y respetando mayúsculas; también se
+#                              acepta la forma TODO-MAYÚSCULAS (presentaciones en guion: "FRODO").
+#                              Si un nombre contiene a otro ("Feyd-Rautha" / "Feyd"), se cuenta una vez.
+#     cues:    [...]           variantes del hablante en el guion/CSV que se unifican en la clave.
+#     nota:    "..."           advertencia de ambigüedad; acompaña los resultados.
+#
+# Las entradas con `nota` tienen conteos aproximados.
+
+lotr:
+  FRODO: {names: [Frodo]}
+  SAM: {names: [Sam, Samwise], cues: [SAM GAMGEE, SAMWISE]}
+  GANDALF: {names: [Gandalf, Mithrandir, Grey Pilgrim], cues: [GANDALF THE WHITE]}
+  ARAGORN: {names: [Aragorn, Strider, Elessar], cues: [STRIDER]}
+  BOROMIR: {names: [Boromir]}
+  LEGOLAS: {names: [Legolas]}
+  GIMLI: {names: [Gimli]}
+  MERRY: {names: [Merry, Meriadoc], nota: "'Merry' también es adjetivo al inicio de frase"}
+  PIPPIN: {names: [Pippin, Peregrin]}
+  GOLLUM: {names: [Gollum, Sméagol, Smeagol], cues: [SMEAGOL]}
+  BILBO: {names: [Bilbo]}
+  THEODEN: {names: [Théoden, Theoden], cues: [KING THEODEN]}
+  EOWYN: {names: [Éowyn, Eowyn]}
+  EOMER: {names: [Éomer, Eomer]}
+  FARAMIR: {names: [Faramir]}
+  DENETHOR: {names: [Denethor]}
+  SARUMAN: {names: [Saruman, Sharkey], nota: "'Sharkey' = Saruman en el Saneamiento de la Comarca"}
+  GALADRIEL: {names: [Galadriel]}
+  CELEBORN: {names: [Celeborn]}
+  ELROND: {names: [Elrond]}
+  ARWEN: {names: [Arwen]}
+  HALDIR: {names: [Haldir]}
+  TREEBEARD: {names: [Treebeard, Fangorn], nota: "'Fangorn' también es el bosque"}
+  WORMTONGUE: {names: [Wormtongue, Gríma, Grima]}
+  SAURON: {names: [Sauron]}
+  BOMBADIL: {names: [Bombadil]}
+
+dune:
+  PAUL: {names: [Paul, "Muad'Dib", Usul], cues: [PAUL ATREIDES, "MUAD'DIB", USUL]}
+  JESSICA: {names: [Jessica], cues: [LADY JESSICA]}
+  LETO: {names: [Leto, Duke], cues: [DUKE LETO],
+         nota: "'Duke' es Leto en el Libro 1, pero luego también se usa para Paul"}
+  BARON: {names: [Baron, Vladimir Harkonnen], cues: [BARON HARKONNEN, THE BARON]}
+  CHANI: {names: [Chani]}
+  STILGAR: {names: [Stilgar]}
+  GURNEY: {names: [Gurney]}
+  DUNCAN: {names: [Duncan, Idaho], cues: [IDAHO, DUNCAN IDAHO]}
+  KYNES: {names: [Kynes, Liet]}
+  FEYD: {names: [Feyd-Rautha, Feyd], cues: [FEYD-RAUTHA]}
+  RABBAN: {names: [Rabban]}
+  MOHIAM: {names: [Mohiam, Reverend Mother],
+           cues: [REVEREND MOTHER, GAIUS HELEN MOHIAM, REVEREND MOTHER MOHIAM, REVEREND MOTHER GAIUS MOHIAM],
+           nota: "'Reverend Mother' también nombra a Ramallo y, después, a Jessica"}
+  THUFIR: {names: [Thufir, Hawat], cues: [HAWAT, THUFIR HAWAT]}
+  YUEH: {names: [Yueh], cues: [DOCTOR YUEH, DR YUEH]}
+  PITER: {names: [Piter]}
+  IRULAN: {names: [Irulan], nota: "En el libro aparece sobre todo en los epígrafes"}
+  EMPEROR: {names: [Emperor, Shaddam, Padishah], cues: [SHADDAM]}
+  ALIA: {names: [Alia]}
+  JAMIS: {names: [Jamis]}
+  SHADOUT MAPES: {names: [Mapes]}
+
+hp:   # Maven ya trae nombres completos; las variantes van en `names`
+  HARRY POTTER: {names: [Harry]}
+  RON WEASLEY: {names: [Ron]}
+  HERMIONE GRANGER: {names: [Hermione]}
+  ALBUS DUMBLEDORE: {names: [Dumbledore]}
+  RUBEUS HAGRID: {names: [Hagrid]}
+  SEVERUS SNAPE: {names: [Snape]}
+  MINERVA MCGONAGALL: {names: [McGonagall]}
+  HORACE SLUGHORN: {names: [Slughorn]}
+  VOLDEMORT: {names: [Voldemort, You-Know-Who, Dark Lord, He-Who-Must-Not-Be-Named]}
+  TOM RIDDLE: {names: [Riddle], nota: "En el libro 4 'Riddle' también es la casa y la familia Riddle"}
+  NEVILLE LONGBOTTOM: {names: [Neville]}
+  REMUS LUPIN: {names: [Lupin]}
+  DRACO MALFOY: {names: [Draco, Malfoy], nota: "'Malfoy' a secas suele ser Draco, pero también Lucius"}
+  LUCIUS MALFOY: {names: [Lucius]}
+  ALASTOR MOODY: {names: [Moody]}
+  FRED WEASLEY: {names: [Fred]}
+  GEORGE WEASLEY: {names: [George]}
+  GINNY WEASLEY: {names: [Ginny]}
+  ARTHUR WEASLEY: {names: [Mr. Weasley, Mr Weasley]}
+  MOLLY WEASLEY: {names: [Mrs. Weasley, Mrs Weasley]}
+  DOLORES UMBRIDGE: {names: [Umbridge]}
+  SIRIUS BLACK: {names: [Sirius]}
+  CORNELIUS FUDGE: {names: [Fudge]}
+  VERNON DURSLEY: {names: [Uncle Vernon]}
+  DUDLEY DURSLEY: {names: [Dudley]}
+  BELLATRIX LESTRANGE: {names: [Bellatrix]}
+  LUNA LOVEGOOD: {names: [Luna]}
+  DOBBY: {names: [Dobby]}
+  GILDEROY LOCKHART: {names: [Lockhart]}
+  SEAMUS FINNIGAN: {names: [Seamus]}
+
+narnia:
+  PETER: {names: [Peter], cues: [PETER - Z]}
+  SUSAN: {names: [Susan], cues: [SUSAN -]}
+  EDMUND: {names: [Edmund]}
+  LUCY: {names: [Lucy]}
+  ASLAN: {names: [Aslan, Lion], nota: "'the Lion' es Aslan en casi todo LWW"}
+  WHITE WITCH: {names: [Witch, Jadis], cues: [JADIS, WITCH]}
+  MR TUMNUS: {names: [Tumnus, Faun], cues: [MR. TUMNUS, TUMNUS], nota: "'the Faun' es Tumnus en LWW"}
+  MR BEAVER: {names: [Mr Beaver, Mr. Beaver], cues: [MR. BEAVER, BEAVER, -MR BEAVE],
+              nota: "'Beaver' a secas no se cuenta para no mezclar con Mrs Beaver"}
+  MRS BEAVER: {names: [Mrs Beaver, Mrs. Beaver], cues: [MRS. BEAVER]}
+  MAUGRIM: {names: [Maugrim, Fenris Ulf]}
+  FATHER CHRISTMAS: {names: [Father Christmas]}
+  PROFESSOR KIRKE: {names: [Professor], cues: ["'PROFESSOR KIRKE"],
+                    nota: "En el libro se le llama casi siempre 'the Professor'"}
+  FOX: {names: [Fox], nota: "El zorro que habla es invención de la película; en el libro 'Fox' es genérico"}
+  GINARRBRIK: {names: [Ginarrbrik, Dwarf], nota: "En el libro el enano de la Bruja no tiene nombre ('the Dwarf')"}

@@ -1,0 +1,279 @@
+# Benchmark LOTR — libro (Tolkien) vs guiones de rodaje (Walsh, Boyens & Jackson).
+#
+# Esquema:
+#   id, category, question (EN: idioma del corpus), question_es
+#   answer      : respuesta de referencia (humana)
+#   must        : grupos de palabras clave; la respuesta es correcta si contiene AL MENOS una
+#                 alternativa de CADA grupo (insensible a mayúsculas/acentos)
+#   expect      : "abstain" para preguntas sin respuesta / premisa falsa
+#   gold_fn     : (quantitative) función en rag_mb.eval.gold que calcula la respuesta desde el corpus
+#   evidence    : para métricas de recuperación; un chunk es relevante si es del medio (y obra)
+#                 indicados y contiene TODOS los `terms`. Verificado contra el corpus (rmb check-questions).
+#
+# Categorías: factual_book | factual_film | divergence | quantitative | unanswerable | false_premise
+#   false_premise: la pregunta asume algo falso, pero SÍ hay respuesta; correcta si corrige la premisa
+#                  con lo que cuentan las fuentes (no basta con abstenerse).
+#   interpretive : "por qué" / motivos / temas. Sin `must`: se puntúa A MANO con `rubric` (1 / 0.5 / 0)
+#                  en el review.csv de la corrida y `rmb eval-score`. `evidence` = escenas que la sustentan.
+
+saga: lotr
+questions:
+  # ---------------------------------------------------------------- factual_book
+  - id: lotr_b01
+    category: factual_book
+    question: "In the book, what ages were Bilbo and Frodo turning at the Long-expected Party?"
+    question_es: "En el libro, ¿qué edades cumplían Bilbo y Frodo en la fiesta?"
+    answer: "Bilbo turned 111 (eleventy-one) and Frodo 33, the hobbit coming of age."
+    must: [["111", "eleventy-one", "hundred and eleven"], ["33", "thirty-three", "thirty three"]]
+    evidence: [{medium: book, work: fotr, terms: ["eleventy-one"]}, {medium: book, work: fotr, terms: ["thirty-three"]}]
+  - id: lotr_b02
+    category: factual_book
+    question: "In the book, who is the 'daughter of the River' who lives with Tom Bombadil?"
+    question_es: "En el libro, ¿quién es la 'hija del Río' que vive con Tom Bombadil?"
+    answer: "Goldberry."
+    must: [["goldberry"]]
+    evidence: [{medium: book, terms: ["goldberry", "daughter of the river"]}]
+  - id: lotr_b03
+    category: factual_book
+    question: "In the book, which tree traps Merry and Pippin in the Old Forest?"
+    question_es: "En el libro, ¿qué árbol atrapa a Merry y Pippin en el Bosque Viejo?"
+    answer: "Old Man Willow."
+    must: [["willow"]]
+    evidence: [{medium: book, work: fotr, terms: ["old man willow"]}]
+  - id: lotr_b04
+    category: factual_book
+    question: "What is the full name of the keeper of the Prancing Pony inn in Bree, according to the book?"
+    question_es: "Según el libro, ¿cuál es el nombre completo del posadero del Poney Pisador?"
+    answer: "Barliman Butterbur."
+    must: [["barliman"], ["butterbur"]]
+    evidence: [{medium: book, terms: ["barliman butterbur"]}]
+  - id: lotr_b05
+    category: factual_book
+    question: "In the book, what are the names of Elrond's sons?"
+    question_es: "En el libro, ¿cómo se llaman los hijos de Elrond?"
+    answer: "Elladan and Elrohir."
+    must: [["elladan"], ["elrohir"]]
+    evidence: [{medium: book, terms: ["elladan", "elrohir"]}]
+  - id: lotr_b06
+    category: factual_book
+    question: "In the book, what gift does Galadriel give to Sam?"
+    question_es: "En el libro, ¿qué regalo le da Galadriel a Sam?"
+    answer: "A little box of plain grey wood with earth from her orchard (and a mallorn seed)."
+    must: [["box"], ["earth", "soil", "seed", "nut", "mallorn", "garden", "orchard"]]
+    evidence: [{medium: book, work: fotr, terms: [["little box of plain grey wood"], ["earth from my orchard"]]}]
+  - id: lotr_b07
+    category: factual_book
+    question: "In the book, who guides the Rohirrim through the Druadan Forest by the Stonewain Valley?"
+    question_es: "En el libro, ¿quién guía a los Rohirrim por el bosque de Drúadan y el valle de Stonewain?"
+    answer: "Ghan-buri-Ghan, headman of the Wild Men (Woses)."
+    must: [["ghan"]]
+    evidence: [{medium: book, work: rotk, terms: ["ghan-buri-ghan"]}, {medium: book, work: rotk, terms: ["stonewain"]}]
+  - id: lotr_b08
+    category: factual_book
+    question: "In the book, what name do the ruffians in the Shire use for their boss during the Scouring?"
+    question_es: "En el libro, ¿qué nombre usan los rufianes para su jefe durante el Saneamiento de la Comarca?"
+    answer: "Sharkey (Saruman)."
+    must: [["sharkey"]]
+    evidence: [{medium: book, work: rotk, terms: ["sharkey"]}]
+  - id: lotr_b09
+    category: factual_book
+    question: "In the book, what is the name of Glorfindel's horse that carries Frodo to the Ford?"
+    question_es: "En el libro, ¿cómo se llama el caballo de Glorfindel que lleva a Frodo al Vado?"
+    answer: "Asfaloth."
+    must: [["asfaloth"]]
+    evidence: [{medium: book, work: fotr, terms: ["asfaloth"]}]
+
+  # ---------------------------------------------------------------- factual_film
+  - id: lotr_f01
+    category: factual_film
+    question: "In the film's prologue, which character narrates the history of the Rings of Power?"
+    question_es: "En el prólogo de la película, ¿qué personaje narra la historia de los Anillos?"
+    answer: "Galadriel (voice-over)."
+    must: [["galadriel"]]
+    evidence: [{medium: screenplay, work: fotr, terms: ["galadriel", "rings"]}]
+  - id: lotr_f02
+    category: factual_film
+    question: "In The Fellowship of the Ring film, what are Boromir's last words to Aragorn?"
+    question_es: "En la película La Comunidad del Anillo, ¿cuáles son las últimas palabras de Boromir a Aragorn?"
+    answer: "'I would have followed you, my brother... my captain, my king.'"
+    must: [["my king", "my captain", "my brother"]]
+    evidence: [{medium: screenplay, work: fotr, terms: ["my captain, my king"]}]
+  - id: lotr_f03
+    category: factual_film
+    question: "In The Return of the King film, what does Eowyn reply when the Witch-king says no man can kill him?"
+    question_es: "En El Retorno del Rey, ¿qué responde Éowyn cuando el Rey Brujo dice que ningún hombre puede matarlo?"
+    answer: "'I am no man!'"
+    must: [["no man"]]
+    evidence: [{medium: screenplay, work: rotk, terms: ["i am no man"]}]
+  - id: lotr_f04
+    category: factual_film
+    question: "In The Return of the King film, how does Gollum turn Frodo against Sam on the stairs of Cirith Ungol?"
+    question_es: "En El Retorno del Rey, ¿cómo pone Gollum a Frodo en contra de Sam en las escaleras de Cirith Ungol?"
+    answer: "He scatters lembas crumbs on the sleeping Sam so Frodo believes Sam ate the food; Frodo sends Sam home."
+    must: [["lembas", "bread", "crumbs", "food"]]
+    evidence: [{medium: screenplay, work: rotk, terms: ["lembas", "crumbs"]}]
+  - id: lotr_f05
+    category: factual_film
+    question: "In The Return of the King film, who sings a song for Denethor while Faramir rides out?"
+    question_es: "En El Retorno del Rey, ¿quién canta para Denethor mientras Faramir cabalga a Osgiliath?"
+    answer: "Pippin."
+    must: [["pippin"]]
+    evidence: [{medium: screenplay, work: rotk, terms: ["pippin", "song"]}]
+  - id: lotr_f06
+    category: factual_film
+    question: "In The Two Towers film, who leads the Elves that arrive to fight at Helm's Deep?"
+    question_es: "En Las Dos Torres, ¿quién comanda a los elfos que llegan a pelear en el Abismo de Helm?"
+    answer: "Haldir of Lothlorien."
+    must: [["haldir"]]
+    evidence: [{medium: screenplay, work: ttt, terms: ["haldir", "elves"]}]
+
+  # ---------------------------------------------------------------- divergence
+  - id: lotr_d01
+    category: divergence
+    question: "Who helps Frodo reach the Ford of Bruinen in the book, and who does it in the film?"
+    question_es: "¿Quién ayuda a Frodo a llegar al Vado del Bruinen en el libro y quién en la película?"
+    answer: "Book: Glorfindel (Frodo rides his horse Asfaloth). Film: Arwen."
+    must: [["glorfindel"], ["arwen"]]
+    evidence: [{medium: book, work: fotr, terms: ["glorfindel"]}, {medium: screenplay, work: fotr, terms: ["arwen"]}]
+  - id: lotr_d02
+    category: divergence
+    question: "Do Elves fight at Helm's Deep in the book and in the film?"
+    question_es: "¿Pelean elfos en el Abismo de Helm en el libro y en la película?"
+    answer: "Book: no Elven army (only Legolas). Film: Haldir leads an Elven host from Lothlorien."
+    must: [["haldir"], ["legolas", "no ", "not", "only"]]
+    evidence: [{medium: screenplay, work: ttt, terms: ["haldir"]}, {medium: book, work: ttt, terms: ["helm's deep", "legolas"]}]
+  - id: lotr_d03
+    category: divergence
+    question: "Where do Faramir and his men take Frodo and Sam in the film, and how does the book differ?"
+    question_es: "¿A dónde lleva Faramir a Frodo y Sam en la película y en qué difiere el libro?"
+    answer: "Film: to Osgiliath. Book: Faramir questions them at Henneth Annun and lets them go; they never go to Osgiliath."
+    must: [["osgiliath"], ["henneth", "let them go", "released", "free"]]
+    evidence: [{medium: screenplay, work: ttt, terms: ["osgiliath", "faramir"]}, {medium: book, work: ttt, terms: ["henneth annun"]}]
+  - id: lotr_d04
+    category: divergence
+    question: "In which part of the story does Shelob appear in the book versus the films?"
+    question_es: "¿En qué parte de la historia aparece Ella-Laraña en el libro y en las películas?"
+    answer: "Book: end of The Two Towers (Book IV). Films: moved to The Return of the King."
+    must: [["two towers"], ["return of the king"]]
+    evidence: [{medium: book, work: ttt, terms: ["shelob"]}, {medium: screenplay, work: rotk, terms: ["shelob"]}]
+  - id: lotr_d05
+    category: divergence
+    question: "Where does Boromir's death take place in the narrative structure of the book versus the films?"
+    question_es: "¿Dónde ocurre la muerte de Boromir en la estructura del libro frente a las películas?"
+    answer: "Book: opening chapter of The Two Towers ('The Departure of Boromir'). Film: end of The Fellowship of the Ring."
+    must: [["two towers"], ["fellowship"]]
+    evidence: [{medium: book, work: ttt, terms: ["boromir", "horn"]}, {medium: screenplay, work: fotr, terms: ["boromir", "my king"]}]
+  - id: lotr_d06
+    category: divergence
+    question: "How does the Army of the Dead participate in the war in the film, compared with the book?"
+    question_es: "¿Cómo participa el Ejército de los Muertos en la guerra en la película comparado con el libro?"
+    answer: "Film: the Dead leap from the ships and fight on the Pelennor Fields. Book: they rout the Corsairs at Pelargir and are released; Aragorn arrives at the Pelennor with living men from the south."
+    must: [["pelargir", "corsair"], ["pelennor"]]
+    evidence: [{medium: screenplay, work: rotk, terms: ["army of the dead"]}, {medium: book, work: rotk, terms: ["pelargir"]}]
+  - id: lotr_d07
+    category: divergence
+    question: "Does Frodo send Sam away on the way to Cirith Ungol in the book, as he does in the film?"
+    question_es: "¿Frodo despide a Sam camino a Cirith Ungol en el libro, como en la película?"
+    answer: "No. Only in the film does Frodo (tricked by Gollum with lembas crumbs) send Sam home."
+    must: [["no", "not", "never", "only in the film"], ["lembas", "film"]]
+    evidence: [{medium: screenplay, work: rotk, terms: ["go home"]}, {medium: book, work: ttt, terms: ["stairs"]}]
+  - id: lotr_d08
+    category: divergence
+    question: "Is the Scouring of the Shire part of the film adaptation?"
+    question_es: "¿El Saneamiento de la Comarca forma parte de la adaptación cinematográfica?"
+    answer: "No. In the book Saruman (Sharkey) takes over the Shire and is killed by Wormtongue; the film omits it."
+    must: [["no", "not", "omit", "omitted", "cut", "absent"]]
+    evidence: [{medium: book, work: rotk, terms: ["sharkey"]}]
+
+  # ---------------------------------------------------------------- quantitative (gold desde el corpus)
+  - id: lotr_q01
+    category: quantitative
+    question: "In The Fellowship of the Ring screenplay, which character has the most lines of dialogue?"
+    question_es: "En el guion de La Comunidad del Anillo, ¿qué personaje tiene más líneas de diálogo?"
+    gold_fn: top_speaker
+    gold_args: {work: fotr}
+    evidence: []
+  - id: lotr_q02
+    category: quantitative
+    question: "In The Two Towers screenplay, which character has the most lines of dialogue?"
+    question_es: "En el guion de Las Dos Torres, ¿qué personaje tiene más líneas de diálogo?"
+    gold_fn: top_speaker
+    gold_args: {work: ttt}
+    evidence: []
+  - id: lotr_q03
+    category: quantitative
+    question: "How many chapters does The Fellowship of the Ring have in the book (Books I and II together)?"
+    question_es: "¿Cuántos capítulos tiene La Comunidad del Anillo en el libro (Libros I y II)?"
+    gold_fn: n_chapters
+    gold_args: {work: fotr}
+    evidence: []
+  - id: lotr_q04
+    category: quantitative
+    question: "Which chapter of The Fellowship of the Ring book is the longest by word count?"
+    question_es: "¿Cuál es el capítulo más largo (en palabras) de La Comunidad del Anillo?"
+    gold_fn: longest_chapter
+    gold_args: {work: fotr}
+    evidence: []
+
+  # ---------------------------------------------------------------- unanswerable / premisa falsa
+  - id: lotr_u01
+    category: unanswerable
+    question: "In the film, what does Tom Bombadil say to the hobbits when he rescues them from the Barrow-wight?"
+    question_es: "En la película, ¿qué les dice Tom Bombadil a los hobbits al rescatarlos del Tumulario?"
+    answer: "False premise: Tom Bombadil does not appear in the films."
+    expect: abstain
+    evidence: []
+  - id: lotr_u02
+    category: unanswerable
+    question: "In the book, what does Arwen shout at the Nazgul at the Ford of Bruinen?"
+    question_es: "En el libro, ¿qué le grita Arwen a los Nazgûl en el Vado del Bruinen?"
+    answer: "False premise: in the book Arwen is not at the Ford; Glorfindel's horse carries Frodo."
+    expect: abstain
+    evidence: []
+  - id: lotr_u03
+    category: unanswerable
+    question: "Which song does Legolas sing at Bilbo's farewell party?"
+    question_es: "¿Qué canción canta Legolas en la fiesta de despedida de Bilbo?"
+    answer: "False premise: Legolas is not at Bilbo's party."
+    expect: abstain
+    evidence: []
+  - id: lotr_u04
+    category: unanswerable
+    question: "In the film, how does Wormtongue kill Saruman in the Shire?"
+    question_es: "En la película, ¿cómo mata Gríma a Saruman en la Comarca?"
+    answer: "False premise: the film (and this screenplay) never brings Saruman to the Shire; that happens only in the book."
+    expect: abstain
+    evidence: []
+
+  # ---------------------------------------------------------------- premisa falsa con respuesta (aporte del autor)
+  - id: lotr_p01
+    category: false_premise
+    question: "Why does Frodo not give in to the temptation of the Ring?"
+    question_es: "¿Por qué Frodo no cae ante la tentación del anillo?"
+    answer: >-
+      False premise: Frodo resists for most of the journey (humility, lack of ambition, pity for Gollum and
+      Sam's support), but at the Crack of Doom he does give in and claims the Ring ("I will not do this deed.
+      The Ring is mine!" in the book; "The Ring is mine" in the film). It is destroyed only because Gollum
+      bites it off and falls into the fire.
+    must: [["gollum"], ["mine", "claim", "put it on", "puts it on", "puts on", "succumb", "gives in", "gave in",
+                        "fails", "sucumbe", "cae", "se niega", "reclama", "se lo pone"]]
+    evidence: [{medium: book, work: rotk, terms: ["i will not do this deed", "the ring is mine"]},
+               {medium: screenplay, work: rotk, terms: ["the ring is mine"]}]
+
+  # ---------------------------------------------------------------- interpretativas (rúbrica manual)
+  - id: lotr_i01
+    category: interpretive
+    question: "Why is it Frodo, a hobbit, who can carry the Ring to Mordor?"
+    question_es: "¿Por qué es Frodo, un hobbit, quien puede llevar el Anillo hasta Mordor?"
+    answer: >-
+      His humility and lack of ambition make him less vulnerable to the Ring than the powerful; his pity for
+      Gollum (as Gandalf urged) and Sam's support carry him to the end. Yet at the Crack of Doom he gives in
+      and claims the Ring; it is destroyed only because Gollum seizes it and falls into the fire.
+    rubric: >-
+      1 = da razones sustentadas en pasajes citados (humildad / falta de ambición, piedad hacia Gollum, apoyo de
+      Sam) Y reconoce que al final Frodo cede; 0.5 = razones razonables pero sin evidencia citada, o sin
+      reconocer que cede; 0 = inventa hechos, o afirma que Frodo nunca sucumbe.
+    evidence: [{medium: book, work: fotr, terms: ["pity", "stayed his hand"]},
+               {medium: book, work: rotk, terms: ["i will not do this deed", "the ring is mine"]},
+               {medium: screenplay, work: rotk, terms: ["the ring is mine"]},
+               {medium: screenplay, work: rotk, terms: ["carry you"]}]
